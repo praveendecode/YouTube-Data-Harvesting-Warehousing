@@ -442,7 +442,7 @@ class YT2SQL:
         # 6
         elif option == "What is the total number of likes and dislikes for each video, and what are  their corresponding video names?":
             if st.button("Get Solution"):
-                query_6 = "select title  , like_count , dislike_count  from video  order by like_count "
+                query_6 = "select title  , like_count , dislike_count  from video  order by like_count desc "
                 cursor.execute(query_6)
                 data_6 = [i for i in cursor.fetchall()]
                 st.dataframe(pd.DataFrame(data_6, columns=["Title", "Likes", "Dislikes"], index=range(1, len(data_6) + 1)))
@@ -586,4 +586,3 @@ elif option == "View Channel Document":
         st.json(res[0])
         st.success(f"The {chan_name} channel data has got successfully",icon='✅')
         st.balloons()
-
