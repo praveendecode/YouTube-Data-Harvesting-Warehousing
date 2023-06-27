@@ -35,7 +35,7 @@ cursor = praveen.cursor()
 
 # API Key :
 
-api_key = '' # provide your api key here 
+api_key = 'AIzaSyA5bsraoOkD9rPNYThLjU_qMGh6HDu5W6o' # provide your api key here
 
 # YouTube API Data Connectivity :
 
@@ -488,7 +488,7 @@ class YT2SQL:
 
 Object = YT2SQL()
 
-st.title('You:red[Tube]  Data :red[Harvesting] and :red[Warehousing]')
+st.title("Welcome :green[Teck Geeks] Here :green[Praveen]")
 
 option = st.selectbox(
     '',
@@ -572,7 +572,7 @@ elif option == 'SQL Data Anlaysis':
 
 elif option == "DataSyncPro Endeavor":
 
-    st.header("Welcome :green[Tech Geeks] Here :green[Praveen]")
+    st.subheader('You:red[Tube]  Data :red[Harvesting] and :red[Warehousing]')
     st.caption("In This DataSyncpro Project we would get YouTube Channel data from YouTube Api with the help of 'Channel ID' , We Will Store the channel data into Mongo DB Atlas as a Document then the data Would convert into Sql Records for Data Analysis. This Entire Project depends on Extract Transform Load Process(ETL).")
 
 
@@ -586,5 +586,4 @@ elif option == "View Channel Document":
         st.json(res[0])
         st.success(f"The {chan_name} channel data has got successfully",icon='✅')
         st.balloons()
-
 
