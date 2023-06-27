@@ -35,7 +35,7 @@ cursor = praveen.cursor()
 
 # API Key :
 
-api_key = 'AIzaSyAD2BvXbYPwMcERxUwVBjrlD-1n9drtuAI'
+api_key = '' # provide your api key here 
 
 # YouTube API Data Connectivity :
 
