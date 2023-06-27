@@ -488,7 +488,7 @@ class YT2SQL:
 
 Object = YT2SQL()
 
-st.title("Welcome :green[Teck Geeks] Here :green[Praveen]")
+st.title("Welcome :green[Tech Geeks] Here :green[Praveen]")
 
 option = st.selectbox(
     '',
