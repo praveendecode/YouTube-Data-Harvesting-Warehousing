@@ -34,7 +34,11 @@
                                
                                Method 11 : Data analaysis process using sql quries and python integreation
 
-                             
+                               Method 12 : In this method we can  mongo documents with the help of several option 
+
+                               Method 13 : In this method we can delete Sql records of the Provideed YouTube channel data with help of several option.
+
+                               Note : Stremlit was used in this project to show our cool codes in UI with eye catching data presentation
                                
      Step 3 :  Run  Command prompt  with file location path that where you have the  "YtAPiproject.py" file ,
                In CMD do type this command  "streamlit run YtAPiproject.py"  . It will open on web browers that what you have eg: Google Chrome
