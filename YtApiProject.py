@@ -667,8 +667,8 @@ class YT2SQL:
                     praveen.commit()
                     cursor.execute("select count(*) from channel")
                     res = cursor.fetchall()
-                    st.success("All Documents Successfully Deleted", icon='✅')
-                    st.info(f"Total Documents :{res[0][0]}")
+                    st.success("All Records Successfully Deleted", icon='✅')
+                    st.info(f"Total Channel Records :{res[0][0]}")
 
 
 
