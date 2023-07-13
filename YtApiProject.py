@@ -380,11 +380,11 @@ class YT2SQL:
     # Method 11 :Fetchichg  Solution  For SQL  Data Analsyis queries
     def da_query(self):
 
-        Choice = st.selectbox("Select Option ⬇️",["Manual Questions","Create Own Question"])
+        Choice = st.selectbox("Choose Data Analysis Option ⬇️",["Given Questions","Create Own Question"])
 
 
          # Manual process
-        if Choice == "Manual Questions":
+        if Choice == "Given Questions":
 
                 options = ["What are the Names of all the videos and their corresponding channels?",
                            "Which Top 5 channels have the most number of videos, and how many videos do they have?",
@@ -397,99 +397,99 @@ class YT2SQL:
                            "What is the average duration of all videos in each channel, and what are their corresponding channel names?",
                            "Which Top 100 videos have the highest number of comments, and what are their corresponding channel names?"]
 
-                option = st.selectbox('Problem Statements', options)
+                option = st.selectbox('Select Question ⬇️', options)
 
                 # 1
                 if option == "What are the Names of all the videos and their corresponding channels?":
-                    if st.button("Get Solution"):
+                    if st.button("GET SOLUTION"):
                         query_1 = "select channel.channel_name  , video.title from channel inner join video on  channel.playlist_id = video.playlist_id order by channel.channel_name"
                         cursor.execute(query_1)
                         data_1 = [i for i in cursor.fetchall()]
                         st.dataframe(pd.DataFrame(data_1, columns=["Channel Names", "Video Title"], index=range(1, len(data_1) + 1)))
-                        st.success("Solved", icon="✅")
+                        st.success("DONE", icon="✅")
 
                 # 2
                 elif option == "Which Top 5 channels have the most number of videos, and how many videos do they have?":
-                    if st.button("Get Solution"):
+                    if st.button("GET SOLUTION"):
                         query_2 = "select channel_name  , total_videos   from channel order by total_videos desc limit 5"
                         cursor.execute(query_2)
                         print("Channels Has Most number of Videos :")
                         data_2 = [i for i in cursor.fetchall()]
                         df_1 = pd.DataFrame(data_2, columns=["Channel Names", "Total Videos"], index=range(1, len(data_2) + 1))
                         st.dataframe(df_1)
-                        st.success("Solved", icon="✅")
+                        st.success("DONE", icon="✅")
 
 
 
                 # 3
                 elif option == "What are the top 10 most viewed videos and their respective channels ?":
-                    if st.button("Get Solution"):
+                    if st.button("GET SOLUTION"):
                         query_3 = "select channel_name  , title   from video order by view_count desc limit 10"
                         cursor.execute(query_3)
                         data_3 = [i for i in cursor.fetchall()]
                         df_3 = pd.DataFrame(data_3, columns=['Channels', 'Video Title'], index=range(1, len(data_3) + 1))
                         st.dataframe(df_3)
-                        st.success("Solved", icon="✅")
+                        st.success("DONE", icon="✅")
 
                 # 4
                 elif option == "How many comments were made on each video, and what are their corresponding video names?":
-                    if st.button("Get Solution"):
+                    if st.button("GET SOLUTION"):
                         query_4 = "select title ,comment_count from video  order by comment_count desc"
                         cursor.execute(query_4)
                         data_4 = [i for i in cursor.fetchall()]
                         st.dataframe(pd.DataFrame(data_4, columns=["Video Title", "Total Comments"], index=range(1, len(data_4) + 1)))
-                        st.success("Solved", icon="✅")
+                        st.success("DONE", icon="✅")
                 # 5
                 elif option == "Which Top 10 videos have the highest number of likes, and what are their corresponding channel names?":
-                    if st.button("Get Solution"):
+                    if st.button("GET SOLUTION"):
                         query_5 = "select channel_name , title  from video order by like_count desc limit 10"
                         cursor.execute(query_5)
                         data_5 = [i for i in cursor.fetchall()]
                         st.dataframe(pd.DataFrame(data_5, columns=["Channel Names", "Video Title"], index=range(1, len(data_5) + 1)))
-                        st.success("Solved", icon="✅")
+                        st.success("DONE", icon="✅")
                 # 6
                 elif option == "What is the total number of likes and dislikes for each video, and what are  their corresponding video names?":
-                    if st.button("Get Solution"):
+                    if st.button("GET SOLUTION"):
                         query_6 = "select title  , like_count , dislike_count  from video  order by like_count desc "
                         cursor.execute(query_6)
                         data_6 = [i for i in cursor.fetchall()]
                         st.dataframe(pd.DataFrame(data_6, columns=["Title", "Likes", "Dislikes"], index=range(1, len(data_6) + 1)))
-                        st.success("Solved", icon="✅")
+                        st.success("DONE", icon="✅")
                 # 7
                 elif option == "What is the total number of views for each channel, and what are their corresponding channel names?":
-                    if st.button("Get Solution"):
+                    if st.button("GET SOLUTION"):
                         query_7 = "select channel_name  , channel_views  from channel order by channel_views desc"
                         cursor.execute(query_7)
                         data_7 = [i for i in cursor.fetchall()]
                         st.dataframe(pd.DataFrame(data_7, columns=["Channel Names", "Channel Views"], index=range(1, len(data_7) + 1)))
-                        st.success("Solved", icon="✅")
+                        st.success("DONE", icon="✅")
                 # 8
                 elif option == "What are the names of all the channels that have published videos in the year 2022?":
-                    if st.button("Get Solution"):
+                    if st.button("GET SOLUTION"):
                         query_8 = "select distinct(channel_name) , year_publishedat   from video where year_publishedat = 2022 order by channel_name "
                         cursor.execute(query_8)
                         data_8 = [i for i in cursor.fetchall()]
                         st.code(f"Index   Channels  Year    ")
                         st.code(pd.DataFrame(data_8, columns=["", ""], index=range(1, len(data_8) + 1)))
-                        st.success("Solved", icon="✅")
+                        st.success("DONE", icon="✅")
                 # 9
                 elif option == "What is the average duration of all videos in each channel, and what are their corresponding channel names?":
-                    if st.button("Get Solution"):
+                    if st.button("GET SOLUTION"):
                         query_9 = "select channel_name  , avg(duration)  from video group by channel_name order by avg(duration) desc"
                         cursor.execute(query_9)
                         data_9 = [i for i in cursor.fetchall()]
                         # st.code(f"    Index         ")
                         st.dataframe(pd.DataFrame(data_9, columns=["Channel Names", "Average Video Duration In Seconds"], index=range(1, len(data_9) + 1)))
-                        st.success("Solved", icon="✅")
+                        st.success("DONE", icon="✅")
                 # 10
                 elif option == "Which Top 100 videos have the highest number of comments, and what are their corresponding channel names?":
-                    if st.button("Get Solution"):
+                    if st.button("GET SOLUTION"):
                         query_10 = "select channel_name  , title from video order by comment_count desc limit 100"
                         cursor.execute(query_10)
                         data_10 = [i for i in cursor.fetchall()]
                         # st.code(f"    Index                        ")
                         st.dataframe(pd.DataFrame(data_10, columns=["Channel Names", "Video Title"], index=range(1, len(data_10) + 1)))
-                        st.success("Solved", icon="✅")
+                        st.success("DONE", icon="✅")
 
         # Create Own Questions
         elif Choice == "Create Own Question":
@@ -569,7 +569,7 @@ class YT2SQL:
              detail = st.text_input("Enter Column Names ⬇️")
              value = [i for i in detail.split(' ')]
 
-             if st.button("Get Solution"):
+             if st.button("GET SOLUTION"):
                  try:
                      cursor.execute(query)
                      x = [i for i in cursor.fetchall()]
@@ -578,8 +578,8 @@ class YT2SQL:
                      st.dataframe(df)
                      st.success("Solved", icon='✅')
                  except:
-                     st.error("Given 'Query' or 'Column Names' has mistakes , provide valid data for analysis 🚫")
-                     st.info("Hey Buddy, provide column names with single tab space 🤝")
+                     st.error("Given 'Query' or 'Column Names' Has Mistakes 🚫")
+                     st.info("provide column names with single tab space")
 
 
 # --------------------------------------------------------------------------------------------------------------------------
@@ -590,7 +590,7 @@ class YT2SQL:
             chan_name = [i['Channel_Details']['Channel_Name'] for i in collection.find()]
             delete = st.selectbox('Select Channel Name',chan_name)
             if delete in chan_name:
-                if st.button("Proceed"):
+                if st.button("PROCEED"):
                     collection.delete_one({'Channel_Details.Channel_Name': delete})
                     st.success(f"{delete} channel data has successfully deleted", icon='✅')
                     res = [i for i in collection.find()]
@@ -601,7 +601,7 @@ class YT2SQL:
         elif option == 'Delete Entire Documents':
              st.warning("Alert Conform To Delete All Documents ⚠️")
              choose = st.selectbox("Choose ⬇️",["Retain","Drop All Documents"])
-             if st.button("Proceed"):
+             if st.button("PROCEED"):
                  if choose == "Retain":
                      st.success("Documents Retained", icon='✅')
                      res = [i for i in collection.find()]
@@ -667,8 +667,8 @@ class YT2SQL:
                     praveen.commit()
                     cursor.execute("select count(*) from channel")
                     res = cursor.fetchall()
-                    st.success("All Records Successfully Deleted", icon='✅')
-                    st.info(f"Total Channel Records :{res[0][0]}")
+                    st.success("All Channel Data Successfully Deleted", icon='✅')
+                    st.info(f"Total Channel Data :{res[0][0]}")
 
 
 
@@ -682,49 +682,73 @@ st.title("Welcome :green[Tech Geeks] Here :green[Praveen]")
 
 option = st.selectbox(
     '',
-    ('DataSyncPro Endeavor', 'YouTube API Data Into Mongo Document',"View Channel Document", 'Mongo Document Into SQL Records',
-     'SQL Data Anlaysis','Delete Mongo Documents','Delete SQL Records',"Expertise highlighted"))
+    ('Project Endeavor', 'YouTube API Data Into Mongo Document',"View Channel Document", 'Mongo Document Into SQL Records',
+     'SQL Data Anlaysis','Delete Mongo Documents','Delete SQL Records','Expertise Highlighted'))
 
 # Stage 1 : YT ApI data into Mongo Documents
 
 if option == "YouTube API Data Into Mongo Document":
 
-    chan_id = st.text_input("ENTER CHANNEL ID")
-    Document_Id = [i['Channel_Details']['Channel_Id'] for i in collection.find()]
+    chan_id = st.text_input("PROVIDE CHANNEL ID ⬇️")
+    if st.button('PROCESS'):
+        if len(chan_id) == 24:
 
-    if len(chan_id) == 24:
-        if chan_id not in Document_Id:
-            st.info("Retreive Data From API", icon='⬇️')
-            if st.button("Fetch Data"):
-                Channel_Details = Object.get_channel_stats(youtube, chan_id)
+            di = [i for i in collection.find()]
+            if len(di) <= 0:
+                    st.info("Fetching Api Data", icon='⬇️')
 
-                # channel playlist id from channel details
-                videos_id = Object.get_videos_ids(youtube, Channel_Details["Channel_Details"]['Playlist_Id'])
+                    Channel_Details = Object.get_channel_stats(youtube, chan_id)
 
-                Video_Details = Object.get_vd_and_cd(youtube, videos_id,
-                                                     Channel_Details["Channel_Details"]['Channel_Name'],
-                                                     Channel_Details["Channel_Details"]['Playlist_Id'],
-                                                     Channel_Details['Channel_Details']['Channel_Id'])
+                    # channel playlist id from channel details
+                    videos_id = Object.get_videos_ids(youtube, Channel_Details["Channel_Details"]['Playlist_Id'])
 
-                Playlist_Details = Object.playlist_doc(videos_id, Channel_Details["Channel_Details"]['Playlist_Id'],
-                                                       Channel_Details["Channel_Details"]['Channel_Id'])
-                document = Object.full_json_documents(Channel_Details, Playlist_Details, Video_Details)
-                st.success("Channel Data Has Got Succesfully", icon="✅")
-                Object.Api2MongoDoc(document)
+                    Video_Details = Object.get_vd_and_cd(youtube, videos_id,
+                                                         Channel_Details["Channel_Details"]['Channel_Name'],
+                                                         Channel_Details["Channel_Details"]['Playlist_Id'],
+                                                         Channel_Details['Channel_Details']['Channel_Id'])
 
+                    Playlist_Details = Object.playlist_doc(videos_id, Channel_Details["Channel_Details"]['Playlist_Id'],
+                                                           Channel_Details["Channel_Details"]['Channel_Id'])
+                    document = Object.full_json_documents(Channel_Details, Playlist_Details, Video_Details)
+                    st.success("Channel Data Has Got Succesfully", icon="✅")
+                    Object.Api2MongoDoc(document)
 
+            elif len(di) > 0:
+                Document_Id = [i['Channel_Details']['Channel_Id'] for i in collection.find()]
+                if chan_id not in Document_Id:
+                    st.info("Fetching API Data .....", icon='⬇️')
+
+                    Channel_Details = Object.get_channel_stats(youtube, chan_id)
+
+                    # channel playlist id from channel details
+                    videos_id = Object.get_videos_ids(youtube, Channel_Details["Channel_Details"]['Playlist_Id'])
+
+                    Video_Details = Object.get_vd_and_cd(youtube, videos_id,
+                                                         Channel_Details["Channel_Details"]['Channel_Name'],
+                                                         Channel_Details["Channel_Details"]['Playlist_Id'],
+                                                         Channel_Details['Channel_Details']['Channel_Id'])
+
+                    Playlist_Details = Object.playlist_doc(videos_id, Channel_Details["Channel_Details"]['Playlist_Id'],
+                                                           Channel_Details["Channel_Details"]['Channel_Id'])
+                    document = Object.full_json_documents(Channel_Details, Playlist_Details, Video_Details)
+                    st.success("Channel Data Has Got Succesfully", icon="✅")
+                    Object.Api2MongoDoc(document)
+
+                else:
+                    st.success("Given Channel Data Exists", icon='✅')
 
         else:
-            st.info("Given Channel Id  API Data Already Retrieved", icon='✅')
+            st.error("INVALID CHANNEL ID 🚫")
 
-    else:
-        st.error("Provide Valid Channel ID", icon='🚫')
+
+
+
 
 # Stage 2 : Documents Names  Selection process to Migration of mongo Docs into Sql records
 
 elif option == 'Mongo Document Into SQL Records':
     Names = Object.getChannelNames()
-    Channel_name = st.selectbox("Select Channel Name", Names)
+    Channel_name = st.selectbox("Select Channel Name ⬇️", Names)
     cursor.execute("select channel_name from channel")
     sql_chan_names = [i[0] for i in cursor.fetchall()]
     if Channel_name not in sql_chan_names:
@@ -742,27 +766,27 @@ elif option == 'Mongo Document Into SQL Records':
             f_vd = pd.DataFrame(dataframes[2])
             final_vd =f_vd.reindex(columns=['Video_Id','Playlist_Id','Channel_name','Title','Published_date','Description','ViewCount','LikeCount','FavoriteCount','CommentCount','Duration','DislikeCount','year_pulishedat','channel_id'])
             final_cod = dataframes[3]
-            if st.button("Migrate Data"):
+            if st.button("MIGRATE"):
                 res = Object.df2sqlrec(final_cd, final_pl, final_vd, final_cod)
                 st.balloons()
                 st.success(res, icon="✅")
                 cursor.execute("select count(*) from channel")
                 channel_count = [i for i in cursor.fetchone()]
-                st.success(f"Total Channel records :{channel_count[0]}")
+                st.success(f"Total Channel Data :{channel_count[0]}")
 
 
         else:
-            st.warning("Given Channel Name Not Found", icon='🚨')
+            st.warning("Given Channel Name Not Found", icon='🚫')
     else:
-        st.error("Given Channel Details Already Inserted", icon='🚫')
+        st.success("Given Channel Details Already Inserted", icon='✅')
 
 elif option == 'SQL Data Anlaysis':
     Object.da_query()
 
-elif option == "DataSyncPro Endeavor":
+elif option == 'Project Endeavor':
 
     st.subheader('You:red[Tube]  Data :red[Harvesting] and :red[Warehousing]')
-    st.caption("In This DataSyncpro Project we would get YouTube Channel data from YouTube Api with the help of 'Channel ID' , We Will Store the channel data into Mongo DB Atlas as a Document then the data Would convert into Sql Records for Data Analysis. This Entire Project depends on Extract Transform Load Process(ETL).")
+    st.caption("In This  Project we would get YouTube Channel data from YouTube API with the help of 'Channel ID' , We Will Store the channel data into Mongo DB Atlas as a Document then the data Would convert into Sql Records for Data Analysis. This Entire Project depends on Extract Transform Load Process(ETL).")
 
 
 
@@ -771,7 +795,7 @@ elif option == "View Channel Document":
     chan_name = st.selectbox('Select Channel Name',Names)
 
     if chan_name in Names:
-        if st.button("Get Document"):
+        if st.button("GET DOCUMENT"):
             res = [i  for i in collection.find({'Channel_Details.Channel_Name':chan_name}, {'_id': 0})]
             st.info("Channel Document",icon='⬇️')
             st.json(res[0])
@@ -784,12 +808,11 @@ elif option == 'Delete Mongo Documents':
 elif option == 'Delete SQL Records':
     Object.delsqlrec()
 
-elif option == 'Expertise highlighted':
+elif option == 'Expertise Highlighted':
     st.success("Skills Covered",icon="✅")
     st.info("""      Python (Scripting)\n\nData Collection\n\nMongoDB\n\nSQL\n\nAPI Integration\n\nData Managment using MongoDB (Atlas) and PostgresSQl\n\nIDE: Pycharm Community Version\n\n """)
-    st.info("Important Thing ",icon="⬇️")
-    st.header(":green[Praveen] Will  Catch You Later :green[Tech Geeks]")
-    st.subheader("Make sure to give ⭐ In [GitHub](https://github.com/praveendecode/YouTube-Data-Harvesting-Warehousing) Connect Through [Linkedln](https://www.linkedin.com/in/praveen-n-2b4004223/)")
+    st.subheader("For More Queries Connect :green[Praveen] Through [Linkedln](https://www.linkedin.com/in/praveen-n-2b4004223/)")
+    st.subheader("Make sure to give ⭐ In [GitHub](https://github.com/praveendecode/YouTube-Data-Harvesting-Warehousing) ")
 
 
 # --------------------------------------------------------------------------------------- Project Finised ------------------------------------------------------------------------------------------------------------------
