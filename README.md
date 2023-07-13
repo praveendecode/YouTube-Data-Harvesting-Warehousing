@@ -2,11 +2,11 @@
 
 
 
-### In This DataSyncpro Project we would get YouTube Channel data from YouTube Api with the help of 'Channel ID' , We Will Store the channel data into Mongo DB Atlas as a Document then the data Would convert into Sql Records for Data Analysis. This Entire Project depends on Extract Transform Load Process(ETL).
+### In This Project we would get YouTube Channel data from YouTube API with the help of 'Channel ID' , We Will Store the channel data into Mongo DB Atlas as a Document then the data Would convert into Sql Records for Data Analysis. This Entire Project depends on Extract Transform Load Process(ETL).
 
 ## Explanation To Do Execute The  Project : 
 
-      Step 1: Install/Import Modules Streamlit , pandas , json , pymongo ,  psycopg2  ,googleapiclient . isodate
+      Step 1: Install/Import Modules Streamlit , pandas , pymongo ,  psycopg2  ,googleapiclient . isodate
 
       Step 2: I have created 11 different methods inside the class "YT2SQL" 
                   
@@ -62,6 +62,9 @@
               Data Managment using MongoDB (Atlas) and PostgresSQl
               
               IDE: Pycharm Community Version
+
+
+## Connect Through [Linkedln](https://www.linkedin.com/in/praveen-n-2b4004223/) For Queries !!!
 
            
 
