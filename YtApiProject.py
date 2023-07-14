@@ -539,7 +539,7 @@ class YT2SQL:
 
 
 
-             # Playlist Tablr Columns Details
+             # Playlist Table Columns Details
 
              playlist_table = ["channel_id",
                          "playlist_id",
@@ -578,8 +578,8 @@ class YT2SQL:
                      st.dataframe(df)
                      st.success("Solved", icon='✅')
                  except:
-                     st.error("Given 'Query' or 'Column Names' Has Mistakes 🚫")
-                     st.info("provide column names with single tab space")
+                     st.error("Given 'Query' or 'Column Names' Has Mistakes",icon='🚫')
+                     st.info("provide column names with single tab space",icon='💡')
 
 
 # --------------------------------------------------------------------------------------------------------------------------
@@ -588,30 +588,37 @@ class YT2SQL:
         option = st.selectbox("Select Delete option ⬇️",["Delete single Document",'Delete Entire Documents'])
         if option == "Delete single Document":
             chan_name = [i['Channel_Details']['Channel_Name'] for i in collection.find()]
-            delete = st.selectbox('Select Channel Name',chan_name)
-            if delete in chan_name:
-                if st.button("PROCEED"):
-                    collection.delete_one({'Channel_Details.Channel_Name': delete})
-                    st.success(f"{delete} channel data has successfully deleted", icon='✅')
-                    res = [i for i in collection.find()]
-                    st.info(f"Total Documents :{len(res)}")
+            if len(chan_name)>0:
+                delete = st.selectbox('Select Channel Name',chan_name)
+                if delete in chan_name:
+                    if st.button("PROCEED"):
+                        collection.delete_one({'Channel_Details.Channel_Name': delete})
+                        st.success(f"{delete} channel data has successfully deleted", icon='✅')
+                        res = [i for i in collection.find()]
+                        st.info(f"Total Documents :{len(res)}")
+            else:
+                st.error("No Channel Document Exists 🚫")
 
 
 
         elif option == 'Delete Entire Documents':
-             st.warning("Alert Conform To Delete All Documents ⚠️")
-             choose = st.selectbox("Choose ⬇️",["Retain","Drop All Documents"])
-             if st.button("PROCEED"):
-                 if choose == "Retain":
-                     st.success("Documents Retained", icon='✅')
-                     res = [i for i in collection.find()]
-                     st.info(f"Total Documents :{len(res)}")
+            chan_name = [i['Channel_Details']['Channel_Name'] for i in collection.find()]
+            if len(chan_name) >0:
+                 st.warning("Alert Conform To Delete All Documents ⚠️")
+                 choose = st.selectbox("Choose ⬇️",["Retain","Drop All Documents"])
+                 if st.button("PROCEED"):
+                     if choose == "Retain":
+                         st.success("Documents Retained", icon='✅')
+                         res = [i for i in collection.find()]
+                         st.info(f"Total Documents :{len(res)}")
 
-                 elif choose == "Drop All Documents":
-                     collection.delete_many({})
-                     res = [i for i in collection.find()]
-                     st.success("All Documents Successfully Deleted", icon='✅')
-                     st.info(f"Total Documents :{len(res)}")
+                     elif choose == "Drop All Documents":
+                         collection.delete_many({})
+                         res = [i for i in collection.find()]
+                         st.success("All Documents Successfully Deleted", icon='✅')
+                         st.info(f"Total Documents :{len(res)}")
+            else:
+                st.error("No Channel Document Exists 🚫")
 
 # ------------------------------------------------------------------------------------------------------------------
    # Method 13 : Delete SQL Records
@@ -621,54 +628,64 @@ class YT2SQL:
         if option == "Delete single Channel Records":
             cursor.execute("select channel_name from channel")
             sqlchanname = [i[0] for i in cursor.fetchall()]
-            sqloption = st.selectbox("Select Channel ⬇️",sqlchanname)
-            if st.button("Proceed"):
-                # Getting correspoding channel id
-                cursor.execute(f"select channel_id from channel where channel_name = '{sqloption}' ")
-                sqlchanid = cursor.fetchall()
-                sqlchanid = sqlchanid[0][0]
+            if len(sqlchanname)>0:
+                sqloption = st.selectbox("Select Channel ⬇️", sqlchanname)
+                if st.button("Proceed"):
+                    # Getting correspoding channel id
+                    cursor.execute(f"select channel_id from channel where channel_name = '{sqloption}' ")
+                    sqlchanid = cursor.fetchall()
+                    sqlchanid = sqlchanid[0][0]
 
-                # delete comment part query
-                cursor.execute(f"delete from comment where video_id in (select video_id from video where channel_id = '{sqlchanid}')")
-                praveen.commit()
+                    # delete comment part query
+                    cursor.execute(f"delete from comment where video_id in (select video_id from video where channel_id = '{sqlchanid}')")
+                    praveen.commit()
 
-                cursor.execute(f"delete from video where playlist_id in (select playlist_id from channel where  channel_id = '{sqlchanid}' )")
-                praveen.commit()
+                    cursor.execute(f"delete from video where playlist_id in (select playlist_id from channel where  channel_id = '{sqlchanid}' )")
+                    praveen.commit()
 
-                cursor.execute(f"delete from playlist where playlist_id in (select playlist_id from channel where channel_id = '{sqlchanid}')")
-                praveen.commit()
+                    cursor.execute(f"delete from playlist where playlist_id in (select playlist_id from channel where channel_id = '{sqlchanid}')")
+                    praveen.commit()
 
-                cursor.execute(f"delete from channel where channel_id ='{sqlchanid}' ")
-                praveen.commit()
+                    cursor.execute(f"delete from channel where channel_id ='{sqlchanid}' ")
+                    praveen.commit()
 
-                st.success(f"The {sqloption} channel records has got deleted successfully",icon='✅')
+                    st.success(f"The {sqloption} channel records has got deleted successfully",icon='✅')
 
-                cursor.execute("select count(*) from channel")
-                res = cursor.fetchall()
-                st.info(f"Total Channel Records :{res[0][0]}")
+                    cursor.execute("select count(*) from channel")
+                    res = cursor.fetchall()
+                    st.info(f"Total Channel Records :{res[0][0]}")
+            else:
+                st.error("No Channel Data Exists 🚫")
 
         elif option == 'Delete Entire Channels Records':
-            st.warning("Alert Conform To Delete All Records ⚠️")
-            choose = st.selectbox("Choose ⬇️", ["Retain", "Drop All Records"])
-            if st.button("Proceed"):
-                if choose == "Retain":
-                    st.success("Documents Retained", icon='✅')
-                    # kept
-                    cursor.execute("select count(*) from channel")
-                    res = cursor.fetchall()
-                    st.info(f"Total Documents :{res[0][0]}")
 
-                elif choose == "Drop All Records":
-                    # Delete All Records in 4 Table
-                    cursor.execute("delete from channel")
-                    cursor.execute("delete from comment")
-                    cursor.execute("delete from video")
-                    cursor.execute("delete from playlist")
-                    praveen.commit()
-                    cursor.execute("select count(*) from channel")
-                    res = cursor.fetchall()
-                    st.success("All Channel Data Successfully Deleted", icon='✅')
-                    st.info(f"Total Channel Data :{res[0][0]}")
+            cursor.execute("select count(*) from channel")
+            res = cursor.fetchall()
+            if res[0][0] > 0:
+                    st.warning("Alert Conform To Delete All Records ⚠️")
+                    choose = st.selectbox("Choose ⬇️", ["Retain", "Drop All Records"])
+                    if st.button("Proceed"):
+                        if choose == "Retain":
+                            st.success("Documents Retained", icon='✅')
+                            # kept
+                            cursor.execute("select count(*) from channel")
+                            res = cursor.fetchall()
+                            st.info(f"Total Documents :{res[0][0]}")
+
+                        elif choose == "Drop All Records":
+                            # Delete All Records in 4 Table
+                            cursor.execute("delete from channel")
+                            cursor.execute("delete from comment")
+                            cursor.execute("delete from video")
+                            cursor.execute("delete from playlist")
+                            praveen.commit()
+                            cursor.execute("select count(*) from channel")
+                            res = cursor.fetchall()
+                            st.success("All Channel Data Successfully Deleted", icon='✅')
+                            st.info(f"Total Channel Data :{res[0][0]}")
+
+            else:
+                st.error("No Channel Data Exists 🚫")
 
 
 
@@ -748,37 +765,41 @@ if option == "YouTube API Data Into Mongo Document":
 
 elif option == 'Mongo Document Into SQL Records':
     Names = Object.getChannelNames()
-    Channel_name = st.selectbox("Select Channel Name ⬇️", Names)
-    cursor.execute("select channel_name from channel")
-    sql_chan_names = [i[0] for i in cursor.fetchall()]
-    if Channel_name not in sql_chan_names:
-        if Channel_name in Names:
-            res = Object.doc2df(Channel_name)
-            cd = res[0]
-            pl = res[1]
-            vd = res[2]
-            cod = res[3]
+    if len(Names)>0:
+        Channel_name = st.selectbox("Select Channel Name ⬇️", Names)
+        cursor.execute("select channel_name from channel")
+        sql_chan_names = [i[0] for i in cursor.fetchall()]
+        if Channel_name not in sql_chan_names:
+            if Channel_name in Names:
+                res = Object.doc2df(Channel_name)
+                cd = res[0]
+                pl = res[1]
+                vd = res[2]
+                cod = res[3]
 
-            dataframes = Object.datatransform(cd, pl, vd, cod)
+                dataframes = Object.datatransform(cd, pl, vd, cod)
 
-            final_cd = dataframes[0]
-            final_pl = dataframes[1]
-            f_vd = pd.DataFrame(dataframes[2])
-            final_vd =f_vd.reindex(columns=['Video_Id','Playlist_Id','Channel_name','Title','Published_date','Description','ViewCount','LikeCount','FavoriteCount','CommentCount','Duration','DislikeCount','year_pulishedat','channel_id'])
-            final_cod = dataframes[3]
-            if st.button("MIGRATE"):
-                res = Object.df2sqlrec(final_cd, final_pl, final_vd, final_cod)
-                st.balloons()
-                st.success(res, icon="✅")
-                cursor.execute("select count(*) from channel")
-                channel_count = [i for i in cursor.fetchone()]
-                st.success(f"Total Channel Data :{channel_count[0]}")
+                final_cd = dataframes[0]
+                final_pl = dataframes[1]
+                f_vd = pd.DataFrame(dataframes[2])
+                final_vd =f_vd.reindex(columns=['Video_Id','Playlist_Id','Channel_name','Title','Published_date','Description','ViewCount','LikeCount','FavoriteCount','CommentCount','Duration','DislikeCount','year_pulishedat','channel_id'])
+                final_cod = dataframes[3]
+                if st.button("MIGRATE"):
+                    res = Object.df2sqlrec(final_cd, final_pl, final_vd, final_cod)
+                    st.balloons()
+                    st.success(res, icon="✅")
+                    cursor.execute("select count(*) from channel")
+                    channel_count = [i for i in cursor.fetchone()]
+                    st.success(f"Total Channel Data :{channel_count[0]}")
 
 
+            else:
+                st.warning("Given Channel Name Not Found", icon='🚫')
         else:
-            st.warning("Given Channel Name Not Found", icon='🚫')
+            st.success("Given Channel Details Already Inserted", icon='✅')
     else:
-        st.success("Given Channel Details Already Inserted", icon='✅')
+        st.error("Get Channel Data Using Option 2 🚫",)
+
 
 elif option == 'SQL Data Anlaysis':
     Object.da_query()
@@ -792,15 +813,17 @@ elif option == 'Project Endeavor':
 
 elif option == "View Channel Document":
     Names = Object.getChannelNames()
-    chan_name = st.selectbox('Select Channel Name',Names)
+    if len(Names)>0:
+        chan_name = st.selectbox('Select Channel Name',Names)
 
-    if chan_name in Names:
-        if st.button("GET DOCUMENT"):
-            res = [i  for i in collection.find({'Channel_Details.Channel_Name':chan_name}, {'_id': 0})]
-            st.info("Channel Document",icon='⬇️')
-            st.json(res[0])
-            st.success(f"The {chan_name} channel data has got successfully",icon='✅')
-
+        if chan_name in Names:
+            if st.button("GET DOCUMENT"):
+                res = [i  for i in collection.find({'Channel_Details.Channel_Name':chan_name}, {'_id': 0})]
+                st.info("Channel Document",icon='⬇️')
+                st.json(res[0])
+                st.success(f"The {chan_name} channel data has got successfully",icon='✅')
+    else:
+        st.error("No Document Exixts 🚫")
 
 elif option == 'Delete Mongo Documents':
     Object.delmongodoc()
