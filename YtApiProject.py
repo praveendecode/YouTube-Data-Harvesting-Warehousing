@@ -854,9 +854,9 @@ elif selected == 'WORKFLOW':
 
 elif selected == "Connect":
 
-    st.header(":green[Project Explanation :] [View Post](https://www.linkedin.com/posts/praveen-n-2b4004223_python-dataanalysis-sql-activity-7082589064373161985-hHRM?utm_source=share&utm_medium=member_desktop)")
+    st.header("Project Explanation : [View Post](https://www.linkedin.com/posts/praveen-n-2b4004223_python-dataanalysis-sql-activity-7082589064373161985-hHRM?utm_source=share&utm_medium=member_desktop)")
     st.header(':red[For More Queries Connect Through] : [Linkedin](https://www.linkedin.com/in/praveen-n-2b4004223/)')
-    st.header(":green[View More Projects :] [Here](https://github.com/praveendecode)")
+    st.header("View More Projects : [Here](https://github.com/praveendecode)")
 hide_st_style = """
                  <style>
                  #MainMenu {visibility:hidden;}
