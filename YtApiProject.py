@@ -19,10 +19,13 @@ import isodate
 
 import random
 
+from streamlit_option_menu import option_menu
+
 from isodate import *
 
 pd.set_option("display.max_columns", None)
 pd.set_option('display.max_rows', None)
+# st.set_page_config(page_title='YouTube')
 
 # Mongo Python connectivity
 praveen_1 = pm.MongoClient('mongodb://praveen:praveenroot@ac-cd7ptzz-shard-00-00.lsdge0t.mongodb.net:27017,ac-cd7ptzz-shard-00-01.lsdge0t.mongodb.net:27017,ac-cd7ptzz-shard-00-02.lsdge0t.mongodb.net:27017/?ssl=true&replicaSet=atlas-ac7cyd-shard-0&authSource=admin&retryWrites=true&w=majority')
@@ -695,147 +698,176 @@ class YT2SQL:
 
 Object = YT2SQL()
 
-st.title("Welcome :green[Tech Geeks] Here :green[Praveen]")
+st.set_page_config(page_title='YouTube Project',layout="wide"   # Page Title
+ )
 
-option = st.selectbox(
-    '',
-    ('Project Endeavor', 'YouTube API Data Into Mongo Document',"View Channel Document", 'Mongo Document Into SQL Records',
-     'SQL Data Anlaysis','Delete Mongo Documents','Delete SQL Records','Expertise Highlighted'))
 
-# Stage 1 : YT ApI data into Mongo Documents
 
-if option == "YouTube API Data Into Mongo Document":
+with st.sidebar:                                     # Navbar
+    selected = option_menu(    menu_title='Project',
+                               options=['INTRO','WORKFLOW','Connect'],
+                               icons = ['house','code-square','linkedin'],
+                               menu_icon='alexa',
+                               default_index=0,
+                           # orientation='horizontal'
+                           )
 
-    chan_id = st.text_input("PROVIDE CHANNEL ID ⬇️")
-    if st.button('PROCESS'):
-        if len(chan_id) == 24:
 
-            di = [i for i in collection.find()]
-            if len(di) <= 0:
-                    st.info("Fetching Api Data", icon='⬇️')
+if selected == 'INTRO':
 
-                    Channel_Details = Object.get_channel_stats(youtube, chan_id)
+    st.title('You:red[Tube]  Data :red[Harvesting] and :red[Warehousing]')
+    st.markdown("In This  Project we would get YouTube Channel data from YouTube API with the help of 'Channel ID' , We Will Store the channel data into Mongo DB Atlas as a Document then the data Would convert into Sql Records for Data Analysis. This Entire Project depends on Extract Transform Load Process(ETL)")
+    # st.subheader("Welcome :orange[Tech Geeks] Here :orange[Praveen] ️")
 
-                    # channel playlist id from channel details
-                    videos_id = Object.get_videos_ids(youtube, Channel_Details["Channel_Details"]['Playlist_Id'])
+elif selected == 'WORKFLOW':
 
-                    Video_Details = Object.get_vd_and_cd(youtube, videos_id,
-                                                         Channel_Details["Channel_Details"]['Channel_Name'],
-                                                         Channel_Details["Channel_Details"]['Playlist_Id'],
-                                                         Channel_Details['Channel_Details']['Channel_Id'])
+        # Stage 1 : YT ApI data into Mongo Documents
+        st.title(":red[Lets Start The Process ...] ")
+        # st.subheader("Choose Option")
+        option = st.selectbox(
+            '',
+            ('YouTube API Data Into Mongo Document',"View Channel Document", 'Mongo Document Into SQL Records',
+             'SQL Data Anlaysis','Delete Mongo Documents','Delete SQL Records'))
 
-                    Playlist_Details = Object.playlist_doc(videos_id, Channel_Details["Channel_Details"]['Playlist_Id'],
-                                                           Channel_Details["Channel_Details"]['Channel_Id'])
-                    document = Object.full_json_documents(Channel_Details, Playlist_Details, Video_Details)
-                    st.success("Channel Data Has Got Succesfully", icon="✅")
-                    Object.Api2MongoDoc(document)
+        if option == "YouTube API Data Into Mongo Document":
 
-            elif len(di) > 0:
-                Document_Id = [i['Channel_Details']['Channel_Id'] for i in collection.find()]
-                if chan_id not in Document_Id:
-                    st.info("Fetching API Data .....", icon='⬇️')
+            chan_id = st.text_input("PROVIDE CHANNEL ID ⬇️")
+            if st.button('PROCESS'):
+                if len(chan_id) == 24:
 
-                    Channel_Details = Object.get_channel_stats(youtube, chan_id)
+                    di = [i for i in collection.find()]
+                    if len(di) <= 0:
+                            st.info("Fetching Api Data", icon='⬇️')
 
-                    # channel playlist id from channel details
-                    videos_id = Object.get_videos_ids(youtube, Channel_Details["Channel_Details"]['Playlist_Id'])
+                            Channel_Details = Object.get_channel_stats(youtube, chan_id)
 
-                    Video_Details = Object.get_vd_and_cd(youtube, videos_id,
-                                                         Channel_Details["Channel_Details"]['Channel_Name'],
-                                                         Channel_Details["Channel_Details"]['Playlist_Id'],
-                                                         Channel_Details['Channel_Details']['Channel_Id'])
+                            # channel playlist id from channel details
+                            videos_id = Object.get_videos_ids(youtube, Channel_Details["Channel_Details"]['Playlist_Id'])
 
-                    Playlist_Details = Object.playlist_doc(videos_id, Channel_Details["Channel_Details"]['Playlist_Id'],
-                                                           Channel_Details["Channel_Details"]['Channel_Id'])
-                    document = Object.full_json_documents(Channel_Details, Playlist_Details, Video_Details)
-                    st.success("Channel Data Has Got Succesfully", icon="✅")
-                    Object.Api2MongoDoc(document)
+                            Video_Details = Object.get_vd_and_cd(youtube, videos_id,
+                                                                 Channel_Details["Channel_Details"]['Channel_Name'],
+                                                                 Channel_Details["Channel_Details"]['Playlist_Id'],
+                                                                 Channel_Details['Channel_Details']['Channel_Id'])
+
+                            Playlist_Details = Object.playlist_doc(videos_id, Channel_Details["Channel_Details"]['Playlist_Id'],
+                                                                   Channel_Details["Channel_Details"]['Channel_Id'])
+                            document = Object.full_json_documents(Channel_Details, Playlist_Details, Video_Details)
+                            st.success("Channel Data Has Got Succesfully", icon="✅")
+                            Object.Api2MongoDoc(document)
+
+                    elif len(di) > 0:
+                        Document_Id = [i['Channel_Details']['Channel_Id'] for i in collection.find()]
+                        if chan_id not in Document_Id:
+                            st.info("Fetching API Data .....", icon='⬇️')
+
+                            Channel_Details = Object.get_channel_stats(youtube, chan_id)
+
+                            # channel playlist id from channel details
+                            videos_id = Object.get_videos_ids(youtube, Channel_Details["Channel_Details"]['Playlist_Id'])
+
+                            Video_Details = Object.get_vd_and_cd(youtube, videos_id,
+                                                                 Channel_Details["Channel_Details"]['Channel_Name'],
+                                                                 Channel_Details["Channel_Details"]['Playlist_Id'],
+                                                                 Channel_Details['Channel_Details']['Channel_Id'])
+
+                            Playlist_Details = Object.playlist_doc(videos_id, Channel_Details["Channel_Details"]['Playlist_Id'],
+                                                                   Channel_Details["Channel_Details"]['Channel_Id'])
+                            document = Object.full_json_documents(Channel_Details, Playlist_Details, Video_Details)
+                            st.success("Channel Data Has Got Succesfully", icon="✅")
+                            Object.Api2MongoDoc(document)
+
+                        else:
+                            st.success("Given Channel Data Exists", icon='✅')
 
                 else:
-                    st.success("Given Channel Data Exists", icon='✅')
-
-        else:
-            st.error("INVALID CHANNEL ID 🚫")
+                    st.error("INVALID CHANNEL ID 🚫")
 
 
 
 
 
-# Stage 2 : Documents Names  Selection process to Migration of mongo Docs into Sql records
+        # Stage 2 : Documents Names  Selection process to Migration of mongo Docs into Sql records
 
-elif option == 'Mongo Document Into SQL Records':
-    Names = Object.getChannelNames()
-    if len(Names)>0:
-        Channel_name = st.selectbox("Select Channel Name ⬇️", Names)
-        cursor.execute("select channel_name from channel")
-        sql_chan_names = [i[0] for i in cursor.fetchall()]
-        if Channel_name not in sql_chan_names:
-            if Channel_name in Names:
-                res = Object.doc2df(Channel_name)
-                cd = res[0]
-                pl = res[1]
-                vd = res[2]
-                cod = res[3]
+        elif option == 'Mongo Document Into SQL Records':
+            Names = Object.getChannelNames()
+            if len(Names)>0:
+                Channel_name = st.selectbox("Select Channel Name ⬇️", Names)
+                cursor.execute("select channel_name from channel")
+                sql_chan_names = [i[0] for i in cursor.fetchall()]
+                if Channel_name not in sql_chan_names:
+                    if Channel_name in Names:
+                        res = Object.doc2df(Channel_name)
+                        cd = res[0]
+                        pl = res[1]
+                        vd = res[2]
+                        cod = res[3]
 
-                dataframes = Object.datatransform(cd, pl, vd, cod)
+                        dataframes = Object.datatransform(cd, pl, vd, cod)
 
-                final_cd = dataframes[0]
-                final_pl = dataframes[1]
-                f_vd = pd.DataFrame(dataframes[2])
-                final_vd =f_vd.reindex(columns=['Video_Id','Playlist_Id','Channel_name','Title','Published_date','Description','ViewCount','LikeCount','FavoriteCount','CommentCount','Duration','DislikeCount','year_pulishedat','channel_id'])
-                final_cod = dataframes[3]
-                if st.button("MIGRATE"):
-                    res = Object.df2sqlrec(final_cd, final_pl, final_vd, final_cod)
-                    st.balloons()
-                    st.success(res, icon="✅")
-                    cursor.execute("select count(*) from channel")
-                    channel_count = [i for i in cursor.fetchone()]
-                    st.success(f"Total Channel Data :{channel_count[0]}")
+                        final_cd = dataframes[0]
+                        final_pl = dataframes[1]
+                        f_vd = pd.DataFrame(dataframes[2])
+                        final_vd =f_vd.reindex(columns=['Video_Id','Playlist_Id','Channel_name','Title','Published_date','Description','ViewCount','LikeCount','FavoriteCount','CommentCount','Duration','DislikeCount','year_pulishedat','channel_id'])
+                        final_cod = dataframes[3]
+                        if st.button("MIGRATE"):
+                            res = Object.df2sqlrec(final_cd, final_pl, final_vd, final_cod)
+                            st.balloons()
+                            st.success(res, icon="✅")
+                            cursor.execute("select count(*) from channel")
+                            channel_count = [i for i in cursor.fetchone()]
+                            st.success(f"Total Channel Data :{channel_count[0]}")
 
 
+                    else:
+                        st.warning("Given Channel Name Not Found", icon='🚫')
+                else:
+                    st.success("Given Channel Details Already Inserted", icon='✅')
             else:
-                st.warning("Given Channel Name Not Found", icon='🚫')
-        else:
-            st.success("Given Channel Details Already Inserted", icon='✅')
-    else:
-        st.error("Get Channel Data Using Option 2 🚫",)
+                st.error("Get Channel Data Using Option 1 🚫",)
 
 
-elif option == 'SQL Data Anlaysis':
-    Object.da_query()
-
-elif option == 'Project Endeavor':
-
-    st.subheader('You:red[Tube]  Data :red[Harvesting] and :red[Warehousing]')
-    st.caption("In This  Project we would get YouTube Channel data from YouTube API with the help of 'Channel ID' , We Will Store the channel data into Mongo DB Atlas as a Document then the data Would convert into Sql Records for Data Analysis. This Entire Project depends on Extract Transform Load Process(ETL).")
+        elif option == 'SQL Data Anlaysis':
+            Object.da_query()
 
 
 
-elif option == "View Channel Document":
-    Names = Object.getChannelNames()
-    if len(Names)>0:
-        chan_name = st.selectbox('Select Channel Name',Names)
 
-        if chan_name in Names:
-            if st.button("GET DOCUMENT"):
-                res = [i  for i in collection.find({'Channel_Details.Channel_Name':chan_name}, {'_id': 0})]
-                st.info("Channel Document",icon='⬇️')
-                st.json(res[0])
-                st.success(f"The {chan_name} channel data has got successfully",icon='✅')
-    else:
-        st.error("No Document Exixts 🚫")
+        elif option == "View Channel Document":
+            Names = Object.getChannelNames()
+            if len(Names)>0:
+                chan_name = st.selectbox('Select Channel Name',Names)
 
-elif option == 'Delete Mongo Documents':
-    Object.delmongodoc()
+                if chan_name in Names:
+                    if st.button("GET DOCUMENT"):
+                        res = [i  for i in collection.find({'Channel_Details.Channel_Name':chan_name}, {'_id': 0})]
+                        st.info("Channel Document",icon='⬇️')
+                        st.json(res[0])
+                        st.success(f"The {chan_name} channel data has got successfully",icon='✅')
+            else:
+                st.error("No Document Exixts 🚫")
 
-elif option == 'Delete SQL Records':
-    Object.delsqlrec()
+        elif option == 'Delete Mongo Documents':
+            Object.delmongodoc()
 
-elif option == 'Expertise Highlighted':
-    st.success("Skills Covered",icon="✅")
-    st.info("""      Python (Scripting)\n\nData Collection\n\nMongoDB\n\nSQL\n\nAPI Integration\n\nData Managment using MongoDB (Atlas) and PostgresSQl\n\nIDE: Pycharm Community Version\n\n """)
-    st.subheader("For More Queries Connect :green[Praveen] Through [Linkedln](https://www.linkedin.com/in/praveen-n-2b4004223/)")
-    st.subheader("Make sure to give ⭐ In [GitHub](https://github.com/praveendecode/YouTube-Data-Harvesting-Warehousing) ")
+        elif option == 'Delete SQL Records':
+            Object.delsqlrec()
+
+elif selected == "Connect":
+
+    st.header(":green[Project Explanation :] [View Post](https://www.linkedin.com/posts/praveen-n-2b4004223_python-dataanalysis-sql-activity-7082589064373161985-hHRM?utm_source=share&utm_medium=member_desktop)")
+    st.header(':red[For More Queries Connect Through] : [Linkedin](https://www.linkedin.com/in/praveen-n-2b4004223/)')
+    st.header(":green[View More Projects :] [Here](https://github.com/praveendecode)")
+hide_st_style = """
+                 <style>
+                 #MainMenu {visibility:hidden;}
+                 footer {visibility:hidden;}
+                 header {visibility:hidden;}
+                 </style>"""
+st.markdown(hide_st_style,unsafe_allow_html=True)
+
+
+
+
 
 
 # --------------------------------------------------------------------------------------- Project Finised ------------------------------------------------------------------------------------------------------------------
