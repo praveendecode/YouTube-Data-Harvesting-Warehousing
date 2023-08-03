@@ -21,11 +21,10 @@ import random
 
 from streamlit_option_menu import option_menu
 
+import time
+
 from isodate import *
 
-pd.set_option("display.max_columns", None)
-pd.set_option('display.max_rows', None)
-# st.set_page_config(page_title='YouTube')
 
 # Mongo Python connectivity
 praveen_1 = pm.MongoClient('mongodb://praveen:praveenroot@ac-cd7ptzz-shard-00-00.lsdge0t.mongodb.net:27017,ac-cd7ptzz-shard-00-01.lsdge0t.mongodb.net:27017,ac-cd7ptzz-shard-00-02.lsdge0t.mongodb.net:27017/?ssl=true&replicaSet=atlas-ac7cyd-shard-0&authSource=admin&retryWrites=true&w=majority')
@@ -698,15 +697,15 @@ class YT2SQL:
 
 Object = YT2SQL()
 
-st.set_page_config(page_title='YouTube Project',layout="wide"   # Page Title
+st.set_page_config(page_title='YouTube Project By Praveen',layout="wide"   # Page Title
  )
 
 
 
 with st.sidebar:                                     # Navbar
     selected = option_menu(    menu_title='Project',
-                               options=['INTRO','WORKFLOW','Connect'],
-                               icons = ['house','code-square','linkedin'],
+                               options=['INTRO',"Data Extract And Mongo Load","View Document",'Sql Data Load','Data Anlaysis','Delete Mongo Documents','Delete SQL Records','CONNECT'],
+                               icons = ['mic-fill','database-fill-add','filetype-json','database-fill-up','pie-chart-fill','database-fill-dash','database-fill-down','bezier'],
                                menu_icon='alexa',
                                default_index=0,
                            # orientation='horizontal'
@@ -716,21 +715,13 @@ with st.sidebar:                                     # Navbar
 if selected == 'INTRO':
 
     st.title('You:red[Tube]  Data :red[Harvesting] and :red[Warehousing]')
-    st.markdown("In This  Project we would get YouTube Channel data from YouTube API with the help of 'Channel ID' , We Will Store the channel data into Mongo DB Atlas as a Document then the data Would convert into Sql Records for Data Analysis. This Entire Project depends on Extract Transform Load Process(ETL)")
-    # st.subheader("Welcome :orange[Tech Geeks] Here :orange[Praveen] ️")
+    st.markdown(f"In This  Project we would get YouTube Channel data from YouTube API with the help of 'Channel ID' , We Will Store the channel data into Mongo DB Atlas as a Document then the data Would convert into Sql Records for Data Analysis. This Entire Project depends on Extract Transform Load Process(ETL)")
 
-elif selected == 'WORKFLOW':
 
-        # Stage 1 : YT ApI data into Mongo Documents
-        st.title(":red[Lets Start The Process ...] ")
-        # st.subheader("Choose Option")
-        option = st.selectbox(
-            '',
-            ('YouTube API Data Into Mongo Document',"View Channel Document", 'Mongo Document Into SQL Records',
-             'SQL Data Anlaysis','Delete Mongo Documents','Delete SQL Records'))
+elif selected == "Data Extract And Mongo Load":
 
-        if option == "YouTube API Data Into Mongo Document":
-
+            # Stage 1 : YT ApI data into Mongo Documents
+            st.title(':red[DATA EXTRACT] AND :red[MONGO LOAD]')
             chan_id = st.text_input("PROVIDE CHANNEL ID ⬇️")
             if st.button('PROCESS'):
                 if len(chan_id) == 24:
@@ -788,7 +779,8 @@ elif selected == 'WORKFLOW':
 
         # Stage 2 : Documents Names  Selection process to Migration of mongo Docs into Sql records
 
-        elif option == 'Mongo Document Into SQL Records':
+elif selected == 'Sql Data Load':
+            st.title(':red[SQL] DATA :red[LOAD]')
             Names = Object.getChannelNames()
             if len(Names)>0:
                 Channel_name = st.selectbox("Select Channel Name ⬇️", Names)
@@ -826,13 +818,15 @@ elif selected == 'WORKFLOW':
                 st.error("Get Channel Data Using Option 1 🚫",)
 
 
-        elif option == 'SQL Data Anlaysis':
+elif selected == 'Data Anlaysis':
+            st.title(' :red[DATA] ANALYSIS ')
             Object.da_query()
 
 
 
 
-        elif option == "View Channel Document":
+elif selected == "View Document":
+            st.title(':red[VIEW] DOCUMENT')
             Names = Object.getChannelNames()
             if len(Names)>0:
                 chan_name = st.selectbox('Select Channel Name',Names)
@@ -846,22 +840,25 @@ elif selected == 'WORKFLOW':
             else:
                 st.error("No Document Exixts 🚫")
 
-        elif option == 'Delete Mongo Documents':
+elif selected == 'Delete Mongo Documents':
+            st.title(' :red[DROP] DOCUMENTS ')
             Object.delmongodoc()
 
-        elif option == 'Delete SQL Records':
+elif selected == 'Delete SQL Records':
+            st.title(':red[DROP] RECORDS')
             Object.delsqlrec()
 
-elif selected == "Connect":
+elif selected == "CONNECT":
 
-    st.header("Project Explanation : [View Post](https://www.linkedin.com/posts/praveen-n-2b4004223_python-dataanalysis-sql-activity-7082589064373161985-hHRM?utm_source=share&utm_medium=member_desktop)")
-    st.header(':red[For More Queries Connect Through] : [Linkedin](https://www.linkedin.com/in/praveen-n-2b4004223/)')
-    st.header("View More Projects : [Here](https://github.com/praveendecode)")
+    st.header(":red[Project] Explanation           [Check out](https://www.linkedin.com/posts/praveen-n-2b4004223_python-dataanalysis-sql-activity-7082589064373161985-hHRM?utm_source=share&utm_medium=member_desktop)")
+    st.header(":red[View More] Projects : [Quick](https://github.com/praveendecode)")
+
+
 hide_st_style = """
                  <style>
                  #MainMenu {visibility:hidden;}
                  footer {visibility:hidden;}
-                 header {visibility:hidden;}
+
                  </style>"""
 st.markdown(hide_st_style,unsafe_allow_html=True)
 
