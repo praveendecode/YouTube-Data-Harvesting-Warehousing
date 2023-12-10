@@ -48,7 +48,7 @@
 
    - Ensure that you are connected to both MongoDB Atlas and your local PostgresSQL DBMS.
 
-### Methods
+# Methods
 
    - Get YouTube Channel Data: Fetches YouTube channel data using a Channel ID and creates channel details in JSON format.
      
