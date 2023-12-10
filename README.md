@@ -1,4 +1,4 @@
-# YouTube Data Harvesting Warehousing
+# YouTube Data Harvesting Warehousing and Sentiment Analaysis (NLP)
 
 ![image](https://github.com/praveendecode/YouTube-Data-Harvesting-Warehousing/assets/95226524/30d29168-225f-48bb-920e-b16570054169)
 
