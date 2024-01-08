@@ -12,7 +12,7 @@
 
   - Harvest YouTube channel data using the YouTube API by providing a 'Channel ID'.
     
-  - Store channel data in MongoDB Atlas as documents.
+  - Store channel data in MongoDB Atlas as documents
     
   - Convert MongoDB data into SQL records for data analysis.
     
